@@ -1,0 +1,52 @@
+<div class="d-flex justify-content-center">
+
+  <div class="col-12 col-md-4">
+    <div class="card">
+      <div class="card-header bg-success text-light"><h5 class="text-center"><i
+            class="bi bi-person-bounding-box"
+          ></i>
+          Reset password</h5></div>
+      <div class="card-body">
+        <form action="/user/reset" method="POST">
+          <input type="hidden" name="PasswordToken" value="{{passwordToken}}" />
+          <input type="hidden" name="UserId" value="{{userId}}" />
+
+          <div class="mb-3">
+            <label for="password-input" class="form-label">
+              Password
+            </label>
+            <input
+              type="password"
+              class="form-control"
+              id="password-input"
+              name="Password"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="confirm-password-input" class="form-label">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              class="form-control"
+              id="confirm-password-input"
+              name="ConfirmPassword"
+            />
+          </div>
+
+          <div>
+            <button type="submit" class="btn btn-primary float-end"><i
+                class="bi bi-floppy"
+              ></i>
+              Save</button>
+            <a href="/" class="btn btn-warning float-end me-2"><i
+                class="bi bi-arrow-left"
+              ></i>
+              Back to login</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>

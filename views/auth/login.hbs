@@ -1,0 +1,27 @@
+<div class="d-flex justify-content-center">
+
+    <div class="col-12 col-md-4">
+        <div class="card">
+            <div class="card-header bg-success text-light"><h5 class="text-center"><i class="bi bi-people"></i> Login user</h5></div>
+            <div class="card-body">              
+                <form action="/" method="POST">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" class="form-control" id="email" required="required" name="Email" />                   
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password:</label>
+                        <input type="password" class="form-control" id="password" name="Password" />                    
+                    </div>
+                    
+                    <div>
+                        <button type="submit" class="btn btn-outline-primary float-end"><i class="bi bi-door-open"></i> Login</button>
+                        <a href="/user/register-select" class="btn btn-outline-info float-end me-2"><i class="bi bi-person-add"></i> Register</a>
+                        <a href="/user/forgot" class="btn btn-outline-warning float-end me-2"><i class="bi bi-person-fill-exclamation"></i> Forgot password</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</div>

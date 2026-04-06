@@ -1,0 +1,32 @@
+{
+  "name": "apicenar",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "qa": "cross-env NODE_ENV=qa nodemon app.js",
+    "seed": "node seeds/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "connect-flash": "^0.1.1",
+    "cross-env": "^7.0.3",
+    "dotenv": "^17.0.1",
+    "express": "^5.1.0",
+    "express-handlebars": "^8.0.3",
+    "express-session": "^1.18.2",
+    "express-validator": "^7.2.1",
+    "mongoose": "^8.16.5",
+    "multer": "^2.0.1",
+    "nodemailer": "^7.0.5",
+    "uuid": "^11.1.0"
+  }
+}

@@ -1,0 +1,72 @@
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Environment variables
+.env
+.env.*.local
+
+# Debug files
+*.swp
+*.swo
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Next.js or build output
+.next/
+dist/
+build/
+
+# Temporary files
+tmp/
+temp/
+
+# IDE-specific files
+.vscode/
+.idea/
+
+# Optional npm cache directory
+.npm/
+
+# Optional REPL history
+.node_repl_history
+
+# Local MongoDB database dump (optional, if you ever use `mongodump`)
+dump/
+
+# Compiled view templates (if any)
+views/*.compiled.*
+
+# Uploads or storage folders (optional, if you store files locally)
+uploads/
+storage/
+
+# Logs or output from testing frameworks
+test-output/
+
+# PM2 logs (if using)
+.pids/
+.pm2/
+
+# Mac trash
+.Trashes
+
+# Windows trash
+$RECYCLE.BIN/
