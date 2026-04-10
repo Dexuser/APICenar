@@ -11,20 +11,20 @@ import homeRouteByRole from "../utils/RedirectByRole.js";
 export default function roleMiddleware(...allowedRoles) {
   return (req, res, next) => {
 
-    if (!req.session.user) {
-      return res.redirect("/auth/login");
+    if (!req.user) {
+      const error = new Error("You must be logged in to access this page.");
+      error.statusCode = 401; // Unauthorized
+      throw error;
     }
 
-    const userRole = req.session.user.role;
+    const userRole = req.user.role;
 
     const hasPermission = allowedRoles.includes(userRole);
 
     if (!hasPermission) {
-      return res.status(403).render("errors/403", {
-        pageTitle: "Access denied",
-        message: "You do not have permission to access this page.",
-        homeUrl: homeRouteByRole(req.session.user),
-      });
+      const error = new Error("You do not have permission to access this page.");
+      error.statusCode = 403; // Forbidden
+      throw error;
     }
 
     next();

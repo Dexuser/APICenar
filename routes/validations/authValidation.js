@@ -1,8 +1,8 @@
 import { body, param } from "express-validator";
 
 export const validatePostLogin = [
-  body("Email").trim().isEmail().withMessage("Invalid email format").escape(),
-  body("Password")
+  body("emailOrUsername").trim().notEmpty().withMessage("Email or Username are required").escape(),
+  body("password")
     .trim()
     .notEmpty()
     .withMessage("Password is required")
@@ -13,7 +13,6 @@ export const validatePostClientOrDeliveryRegister = [
   body("firstName").trim().notEmpty().withMessage("First Name is required").escape(),
   body("lastName").trim().notEmpty().withMessage("Last Name is required").escape(),
   body("phone").trim().notEmpty().withMessage("Phone is required").escape(),
-  body("role").trim().notEmpty().withMessage("Role is required").escape(),
   body("username").trim().notEmpty().withMessage("Username is required").escape(),
   body("email").trim().isEmail().withMessage("Invalid email format").escape(),
 
@@ -60,7 +59,7 @@ export const validatePostCommerceRegister = [
     .notEmpty()
     .withMessage("openTime is required")
     .matches(/^([01]\d|2[0-3]):([0-5]\d)$/)
-    .withMessage("Opening Hour must be in HH:mm format")
+    .withMessage("Open Hour must be in HH:mm format")
     .escape(),
 
   body("closeTime")
@@ -68,7 +67,7 @@ export const validatePostCommerceRegister = [
     .notEmpty()
     .withMessage("closeTime is required")
     .matches(/^([01]\d|2[0-3]):([0-5]\d)$/)
-    .withMessage("Closing Hour must be in HH:mm format")
+    .withMessage("Close Hour must be in HH:mm format")
     .escape(),
 
   body("email")
@@ -109,11 +108,11 @@ export const validatePostCommerceRegister = [
 ];
 
 export const validateGetActivate = [
-  param("token").trim().notEmpty().withMessage("Token is required").escape(),
+  body("token").trim().notEmpty().withMessage("Token is required").escape(),
 ];
 
 export const validatePostForgot = [
-  body("Email").trim().isEmail().withMessage("Invalid email format").escape(),
+  body("emailOrUsername").trim().notEmpty().withMessage("Email or username is required").escape(),
 ];
 
 export const validateGetReset = [
@@ -121,12 +120,12 @@ export const validateGetReset = [
 ];
 
 export const validatePostReset = [
-  body("Password")
+  body("password")
     .trim()
     .notEmpty()
     .withMessage("Password is required")
     .custom((value, { req }) => {
-      if (value !== req.body.ConfirmPassword) {
+      if (value !== req.body.confirmPassword) {
         throw new Error("Passwords do not match");
       }
       return true;
@@ -140,22 +139,14 @@ export const validatePostReset = [
     .matches(/[\W_]/)
     .withMessage("Password must contain at least one special character"),
 
-  body("ConfirmPassword")
+  body("confirmPassword")
     .trim()
     .notEmpty()
     .withMessage("Confirm Password is required"),
 
-  body("UserId")
+  body("token")
     .trim()
     .notEmpty()
-    .withMessage("User ID is required")
-    .isMongoId()
-    .withMessage("Invalid User ID")
-    .escape(),
-
-  body("PasswordToken")
-    .trim()
-    .notEmpty()
-    .withMessage("Password token is required")
-    .escape(),
+    .withMessage("Token is required")
+    .escape()
 ];
