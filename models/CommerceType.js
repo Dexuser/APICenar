@@ -9,6 +9,10 @@ const commerceTypeSchema = new mongoose.Schema(
     image: {
       type: String,
       required: true
+    },
+    isActive: {
+      type: Boolean,
+      default: true
     }
   },
   {

@@ -2,6 +2,7 @@ import "../utils/LoadEnvConfig.js";
 import mongoose from "mongoose";
 import seedCommerceTypes from "./commerceTypeSeed.js"
 import seedDefaultAdmin from "./adminSeed.js";
+import seedDefaultConfigurations from "./configSeed.js";
 import seedDefaultCommerce from "./commerceSeed.js";
 import seedDefaultClient from "./clientSeed.js";
 import seedDefaultDelivery from "./deliverySeed.js";
@@ -20,6 +21,7 @@ const runSeeds = async () => {
         console.log("Mongo connected");
 
         await seedCommerceTypes();
+        await seedDefaultConfigurations();
         await seedDefaultAdmin();
         await seedDefaultCommerce();
         await seedDefaultClient();

@@ -21,7 +21,8 @@ const seedDefaultAdmin = async () => {
         email,
         password: hashedPassword,
         role: UserRoles.ADMIN,
-        isActive: true
+        isActive: true,
+        isDefaultAdmin: true
     });
 
     console.log("Default admin inserted");

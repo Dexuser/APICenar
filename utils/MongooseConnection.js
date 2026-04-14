@@ -8,6 +8,7 @@ import CommerceType from "../models/CommerceType.js"
 import Category from "../models/Category.js"
 import Address from "../models/Address.js"
 import seedDefaultAdminUser from "../seeds/adminSeed.js";
+import seedDefaultConfigurations from "../seeds/configSeed.js";
 
 const connectDB = async () => {
   try {
@@ -39,6 +40,7 @@ const connectDB = async () => {
     console.log("Database initialized successfully");
 
     await seedDefaultAdminUser(User);
+    await seedDefaultConfigurations();
 
 
   } catch (error) {

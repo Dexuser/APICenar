@@ -1,0 +1,1034 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "ApiCenar API",
+    "version": "1.0.0",
+    "description": "Compact OpenAPI documentation for the ApiCenar REST API."
+  },
+  "servers": [
+    { "url": "http://localhost:8080" },
+    { "url": "http://localhost:5000" }
+  ],
+  "security": [{ "BearerAuth": [] }],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "GenericObject": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "AuthLogin": {
+        "type": "object",
+        "required": ["userNameOrEmail", "password"],
+        "properties": {
+          "userNameOrEmail": { "type": "string" },
+          "password": { "type": "string" }
+        }
+      },
+      "AuthRegisterClient": {
+        "type": "object",
+        "required": ["firstName", "lastName", "userName", "email", "phone", "password", "confirmPassword"],
+        "properties": {
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "userName": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "phone": { "type": "string" },
+          "password": { "type": "string" },
+          "confirmPassword": { "type": "string" },
+          "profileImage": { "type": "string", "format": "binary" }
+        }
+      },
+      "AuthRegisterDelivery": {
+        "type": "object",
+        "required": ["firstName", "lastName", "userName", "email", "phone", "password", "confirmPassword"],
+        "properties": {
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "userName": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "phone": { "type": "string" },
+          "password": { "type": "string" },
+          "confirmPassword": { "type": "string" },
+          "profileImage": { "type": "string", "format": "binary" }
+        }
+      },
+      "AuthRegisterCommerce": {
+        "type": "object",
+        "required": ["userName", "email", "password", "confirmPassword", "name", "description", "phone", "openingTime", "closingTime", "commerceTypeId", "logo"],
+        "properties": {
+          "userName": { "type": "string" },
+          "description": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "password": { "type": "string" },
+          "confirmPassword": { "type": "string" },
+          "name": { "type": "string" },
+          "phone": { "type": "string" },
+          "openingTime": {
+            "type": "string",
+            "pattern": "^([01]\\d|2[0-3]):([0-5]\\d)$"
+          },
+          "closingTime": {
+            "type": "string",
+            "pattern": "^([01]\\d|2[0-3]):([0-5]\\d)$"
+          },
+          "commerceTypeId": { "type": "string" },
+          "logo": { "type": "string", "format": "binary" }
+        }
+      },
+      "AuthConfirmEmail": {
+        "type": "object",
+        "required": ["token"],
+        "properties": {
+          "token": { "type": "string" }
+        }
+      },
+      "AuthForgotPassword": {
+        "type": "object",
+        "required": ["userNameOrEmail"],
+        "properties": {
+          "userNameOrEmail": { "type": "string" }
+        }
+      },
+      "AuthResetPassword": {
+        "type": "object",
+        "required": ["token", "password", "confirmPassword"],
+        "properties": {
+          "token": { "type": "string" },
+          "password": { "type": "string" },
+          "confirmPassword": { "type": "string" }
+        }
+      },
+      "AccountUpdateProfile": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string", "format": "email" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "phone": { "type": "string" },
+          "openingTime": {
+            "type": "string",
+            "pattern": "^([01]\\d|2[0-3]):([0-5]\\d)$"
+          },
+          "closingTime": {
+            "type": "string",
+            "pattern": "^([01]\\d|2[0-3]):([0-5]\\d)$"
+          },
+          "profileImage": { "type": "string", "format": "binary" },
+          "logo": { "type": "string", "format": "binary" }
+        }
+      },
+      "AddressBody": {
+        "type": "object",
+        "required": ["label", "street", "sector", "city", "reference"],
+        "properties": {
+          "label": { "type": "string" },
+          "street": { "type": "string" },
+          "sector": { "type": "string" },
+          "city": { "type": "string" },
+          "reference": { "type": "string" }
+        }
+      },
+      "FavoriteBody": {
+        "type": "object",
+        "required": ["commerceId"],
+        "properties": {
+          "commerceId": { "type": "string" }
+        }
+      },
+      "CategoryBody": {
+        "type": "object",
+        "required": ["name", "description"],
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      },
+      "ProductBody": {
+        "type": "object",
+        "required": ["name", "description", "price", "categoryId"],
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "price": { "type": "number" },
+          "categoryId": { "type": "string" },
+          "image": { "type": "string", "format": "binary" }
+        }
+      },
+      "OrderItem": {
+        "type": "object",
+        "required": ["productId", "quantity"],
+        "properties": {
+          "productId": { "type": "string" },
+          "quantity": { "type": "integer", "minimum": 1 }
+        }
+      },
+      "OrderBody": {
+        "type": "object",
+        "required": ["addressId", "items"],
+        "properties": {
+          "addressId": { "type": "string" },
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/OrderItem" },
+            "minItems": 1
+          }
+        }
+      },
+      "ConfigurationUpdateBody": {
+        "type": "object",
+        "required": ["key", "value"],
+        "properties": {
+          "key": { "type": "string" },
+          "value": { "type": "string" }
+        }
+      },
+      "AdminUserCreateBody": {
+        "type": "object",
+        "required": ["firstName", "lastName", "userName", "email", "phone", "password", "confirmPassword"],
+        "properties": {
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "userName": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "phone": { "type": "string" },
+          "password": { "type": "string" },
+          "confirmPassword": { "type": "string" }
+        }
+      },
+      "AdminUserUpdateBody": {
+        "type": "object",
+        "properties": {
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "userName": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "phone": { "type": "string" },
+          "password": { "type": "string" },
+          "confirmPassword": { "type": "string" }
+        }
+      },
+      "AdminUserStatusBody": {
+        "type": "object",
+        "required": ["isActive"],
+        "properties": {
+          "isActive": { "type": "boolean" }
+        }
+      },
+      "CommerceTypeBody": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" },
+          "icon": { "type": "string", "format": "binary" }
+        }
+      }
+    },
+    "parameters": {
+      "IdPath": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "string" }
+      },
+      "CommerceIdPath": {
+        "name": "commerceId",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "string" }
+      },
+      "KeyPath": {
+        "name": "key",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "string" }
+      },
+      "Page": {
+        "name": "page",
+        "in": "query",
+        "description": "Page number for pagination (default 1)",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1
+        }
+      },
+      "PageSize": {
+        "name": "pageSize",
+        "in": "query",
+        "description": "Number of items per page for pagination (default 10, max 100)",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 10
+        }
+      },
+      "SortByCommerceTypes": {
+        "name": "sortBy",
+        "in": "query",
+        "description": "Field to sort commerce types by (title, createdAt, updatedAt, or name)",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "enum": ["title", "createdAt", "updatedAt", "name"],
+          "default": "title"
+        }
+      },
+      "SortDirection": {
+        "name": "sortDirection",
+        "in": "query",
+        "description": "Sort direction for results (asc or desc)",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "enum": ["asc", "desc"],
+          "default": "asc"
+        }
+      },
+      "Search": {
+        "name": "search",
+        "in": "query",
+        "description": "Search term to filter results by name or title",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "CommerceTypeId": {
+        "name": "commerceTypeId",
+        "in": "query",
+        "description": "Commerce type id used to filter commerces",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "CategoryId": {
+        "name": "categoryId",
+        "in": "query",
+        "description": "Category id used to filter products",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "SortByCommerces": {
+        "name": "sortBy",
+        "in": "query",
+        "description": "Field to sort commerces by (commerceName, createdAt, updatedAt, openTime, closeTime, name, openingTime, closingTime)",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "enum": ["commerceName", "createdAt", "updatedAt", "openTime", "closeTime", "name", "openingTime", "closingTime"],
+          "default": "commerceName"
+        }
+      },
+      "SortByProducts": {
+        "name": "sortBy",
+        "in": "query",
+        "description": "Field to sort products by (createdAt, updatedAt, name, price)",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "enum": ["createdAt", "updatedAt", "name", "price"],
+          "default": "createdAt"
+        }
+      },
+      "SortByCategories": {
+        "name": "sortBy",
+        "in": "query",
+        "description": "Field to sort categories by (createdAt, updatedAt, name)",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "enum": ["createdAt", "updatedAt", "name"],
+          "default": "createdAt"
+        }
+      },
+      "SortByClients": {
+        "name": "sortBy",
+        "in": "query",
+        "description": "Field to sort clients by (createdAt, updatedAt, firstName, lastName, email, isActive)",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "enum": ["createdAt", "updatedAt", "firstName", "lastName", "email", "isActive"],
+          "default": "createdAt"
+        }
+      },
+      "SortByDeliveries": {
+        "name": "sortBy",
+        "in": "query",
+        "description": "Field to sort deliveries by (createdAt, updatedAt, firstName, lastName, email, isActive)",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "enum": ["createdAt", "updatedAt", "firstName", "lastName", "email", "isActive"],
+          "default": "createdAt"
+        }
+      },
+      "SortByAdmins": {
+        "name": "sortBy",
+        "in": "query",
+        "description": "Field to sort administrators by (createdAt, updatedAt, firstName, lastName, username, email, isActive)",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "enum": ["createdAt", "updatedAt", "firstName", "lastName", "username", "email", "isActive"],
+          "default": "createdAt"
+        }
+      },
+      "SortByOrders": {
+        "name": "sortBy",
+        "in": "query",
+        "description": "Field to sort orders by (createdAt, updatedAt, total, status)",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "enum": ["createdAt", "updatedAt", "total", "status"],
+          "default": "createdAt"
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/auth/login": {
+      "post": {
+        "security": [],
+        "tags": ["Auth"],
+        "summary": "Login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AuthLogin" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/auth/register-client": {
+      "post": {
+        "security": [],
+        "tags": ["Auth"],
+        "summary": "Register client",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": { "$ref": "#/components/schemas/AuthRegisterClient" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/api/auth/register-delivery": {
+      "post": {
+        "security": [],
+        "tags": ["Auth"],
+        "summary": "Register delivery",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": { "$ref": "#/components/schemas/AuthRegisterDelivery" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/api/auth/register-commerce": {
+      "post": {
+        "security": [],
+        "tags": ["Auth"],
+        "summary": "Register commerce",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": { "$ref": "#/components/schemas/AuthRegisterCommerce" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/api/auth/confirm-email": {
+      "post": {
+        "security": [],
+        "tags": ["Auth"],
+        "summary": "Confirm email",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AuthConfirmEmail" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/auth/forgot-password": {
+      "post": {
+        "security": [],
+        "tags": ["Auth"],
+        "summary": "Forgot password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AuthForgotPassword" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/auth/reset-password": {
+      "post": {
+        "security": [],
+        "tags": ["Auth"],
+        "summary": "Reset password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AuthResetPassword" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/account/me": {
+      "get": {
+        "tags": ["Account"],
+        "summary": "Get authenticated profile",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "patch": {
+        "tags": ["Account"],
+        "summary": "Update authenticated profile",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": { "$ref": "#/components/schemas/AccountUpdateProfile" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/commerce-types": {
+      "get": {
+        "tags": ["Client Catalog"],
+        "summary": "Get commerce types",
+        "parameters": [
+          { "$ref": "#/components/parameters/Page" },
+          { "$ref": "#/components/parameters/PageSize" },
+          { "$ref": "#/components/parameters/SortByCommerceTypes" },
+          { "$ref": "#/components/parameters/SortDirection" },
+          { "$ref": "#/components/parameters/Search" }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/commerce": {
+      "get": {
+        "tags": ["Client Catalog"],
+        "summary": "Get commerces",
+        "parameters": [
+          { "$ref": "#/components/parameters/Page" },
+          { "$ref": "#/components/parameters/PageSize" },
+          { "$ref": "#/components/parameters/SortByCommerces" },
+          { "$ref": "#/components/parameters/SortDirection" },
+          { "$ref": "#/components/parameters/Search" },
+          { "$ref": "#/components/parameters/CommerceTypeId" }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/commerce/{commerceId}/catalog": {
+      "get": {
+        "tags": ["Client Catalog"],
+        "summary": "Get commerce catalog",
+        "parameters": [{ "$ref": "#/components/parameters/CommerceIdPath" }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/addresses": {
+      "get": {
+        "tags": ["Addresses"],
+        "summary": "Get my addresses",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Addresses"],
+        "summary": "Create address",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AddressBody" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/api/addresses/{id}": {
+      "get": {
+        "tags": ["Addresses"],
+        "summary": "Get address by id",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "put": {
+        "tags": ["Addresses"],
+        "summary": "Update address",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AddressBody" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Addresses"],
+        "summary": "Delete address",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "responses": { "204": { "description": "No Content" } }
+      }
+    },
+    "/api/favorites": {
+      "get": {
+        "tags": ["Favorites"],
+        "summary": "Get my favorites",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Favorites"],
+        "summary": "Add favorite",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FavoriteBody" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/api/favorites/{commerceId}": {
+      "delete": {
+        "tags": ["Favorites"],
+        "summary": "Remove favorite",
+        "parameters": [{ "$ref": "#/components/parameters/CommerceIdPath" }],
+        "responses": { "204": { "description": "No Content" } }
+      }
+    },
+    "/api/categories": {
+      "get": {
+        "tags": ["Categories"],
+        "summary": "Get my categories",
+        "parameters": [
+          { "$ref": "#/components/parameters/Page" },
+          { "$ref": "#/components/parameters/PageSize" },
+          { "$ref": "#/components/parameters/SortByCategories" },
+          { "$ref": "#/components/parameters/SortDirection" },
+          { "$ref": "#/components/parameters/Search" }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Categories"],
+        "summary": "Create category",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CategoryBody" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/api/categories/{id}": {
+      "get": {
+        "tags": ["Categories"],
+        "summary": "Get category by id",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "put": {
+        "tags": ["Categories"],
+        "summary": "Update category",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CategoryBody" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Categories"],
+        "summary": "Delete category",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "responses": { "204": { "description": "No Content" } }
+      }
+    },
+    "/api/products": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get my products",
+        "parameters": [
+          { "$ref": "#/components/parameters/Page" },
+          { "$ref": "#/components/parameters/PageSize" },
+          { "$ref": "#/components/parameters/SortByProducts" },
+          { "$ref": "#/components/parameters/SortDirection" },
+          { "$ref": "#/components/parameters/Search" },
+          { "$ref": "#/components/parameters/CategoryId" }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Products"],
+        "summary": "Create product",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": { "$ref": "#/components/schemas/ProductBody" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/api/products/{id}": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get product by id",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "put": {
+        "tags": ["Products"],
+        "summary": "Update product",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": { "$ref": "#/components/schemas/ProductBody" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Products"],
+        "summary": "Delete product",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "responses": { "204": { "description": "No Content" } }
+      }
+    },
+    "/api/orders": {
+      "post": {
+        "tags": ["Orders"],
+        "summary": "Create order",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/OrderBody" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/api/orders/my-orders": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get my orders",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/orders/my-orders/{id}": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get my order detail",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/orders/commerce": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get commerce orders",
+        "parameters": [
+          { "$ref": "#/components/parameters/Page" },
+          { "$ref": "#/components/parameters/PageSize" },
+          { "$ref": "#/components/parameters/SortByOrders" },
+          { "$ref": "#/components/parameters/SortDirection" }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/orders/commerce/{id}": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get commerce order detail",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/orders/delivery": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get delivery orders",
+        "parameters": [
+          { "$ref": "#/components/parameters/Page" },
+          { "$ref": "#/components/parameters/PageSize" },
+          { "$ref": "#/components/parameters/SortByOrders" },
+          { "$ref": "#/components/parameters/SortDirection" }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/orders/delivery/{id}": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get delivery order detail",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/orders/{id}/assign-delivery": {
+      "patch": {
+        "tags": ["Orders"],
+        "summary": "Assign delivery automatically",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/orders/{id}/complete": {
+      "patch": {
+        "tags": ["Orders"],
+        "summary": "Complete order",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/configurations": {
+      "get": {
+        "tags": ["Configurations"],
+        "summary": "Get configurations",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/configurations/{key}": {
+      "get": {
+        "tags": ["Configurations"],
+        "summary": "Get configuration by key",
+        "parameters": [{ "$ref": "#/components/parameters/KeyPath" }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "put": {
+        "tags": ["Configurations"],
+        "summary": "Update configuration",
+        "parameters": [{ "$ref": "#/components/parameters/KeyPath" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ConfigurationUpdateBody" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/admin/dashboard": {
+      "get": {
+        "tags": ["Admin Dashboard"],
+        "summary": "Get dashboard metrics",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/admin/users/clients": {
+      "get": {
+        "tags": ["Admin Users"],
+        "summary": "Get clients",
+        "parameters": [
+          { "$ref": "#/components/parameters/Page" },
+          { "$ref": "#/components/parameters/PageSize" },
+          { "$ref": "#/components/parameters/SortByClients" },
+          { "$ref": "#/components/parameters/SortDirection" },
+          { "$ref": "#/components/parameters/Search" }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/admin/users/deliveries": {
+      "get": {
+        "tags": ["Admin Users"],
+        "summary": "Get deliveries",
+        "parameters": [
+          { "$ref": "#/components/parameters/Page" },
+          { "$ref": "#/components/parameters/PageSize" },
+          { "$ref": "#/components/parameters/SortByDeliveries" },
+          { "$ref": "#/components/parameters/SortDirection" },
+          { "$ref": "#/components/parameters/Search" }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/admin/users/commerces": {
+      "get": {
+        "tags": ["Admin Users"],
+        "summary": "Get commerces",
+        "parameters": [
+          { "$ref": "#/components/parameters/Page" },
+          { "$ref": "#/components/parameters/PageSize" },
+          { "$ref": "#/components/parameters/SortByCommerces" },
+          { "$ref": "#/components/parameters/SortDirection" },
+          { "$ref": "#/components/parameters/Search" }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/admin/users/admins": {
+      "get": {
+        "tags": ["Admin Users"],
+        "summary": "Get administrators",
+        "parameters": [
+          { "$ref": "#/components/parameters/Page" },
+          { "$ref": "#/components/parameters/PageSize" },
+          { "$ref": "#/components/parameters/SortByAdmins" },
+          { "$ref": "#/components/parameters/SortDirection" },
+          { "$ref": "#/components/parameters/Search" }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Admin Users"],
+        "summary": "Create administrator",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AdminUserCreateBody" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/api/admin/users/admins/{id}": {
+      "put": {
+        "tags": ["Admin Users"],
+        "summary": "Update administrator",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AdminUserUpdateBody" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/admin/users/{id}/status": {
+      "patch": {
+        "tags": ["Admin Users"],
+        "summary": "Update user status",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AdminUserStatusBody" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/admin/commerce-types": {
+      "get": {
+        "tags": ["Admin Commerce Types"],
+        "summary": "Get commerce types",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Admin Commerce Types"],
+        "summary": "Create commerce type",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": { "$ref": "#/components/schemas/CommerceTypeBody" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/api/admin/commerce-types/{id}": {
+      "get": {
+        "tags": ["Admin Commerce Types"],
+        "summary": "Get commerce type by id",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "put": {
+        "tags": ["Admin Commerce Types"],
+        "summary": "Update commerce type",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": { "$ref": "#/components/schemas/CommerceTypeBody" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Admin Commerce Types"],
+        "summary": "Delete commerce type with cascade",
+        "parameters": [{ "$ref": "#/components/parameters/IdPath" }],
+        "responses": { "204": { "description": "No Content" } }
+      }
+    }
+  }
+}

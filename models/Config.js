@@ -1,19 +1,25 @@
 import mongoose from "mongoose";
 
-const ConfigSchema = new mongoose.Schema(
+const configSchema = new mongoose.Schema(
   {
-    itebis: {
-      type: Number,
-      required: true,
-      default: 18,
-    }
+    key: {
+      type: String,
+      trim: true,
+      uppercase: true,
+      unique: true,
+      sparse: true,
+    },
+    value: {
+      type: String,
+      default: null,
+    },
   },
   {
-    timestamps: true, // Automatically manage createdAt and updatedAt fields
-    collection: 'Config' // Specify the collection name, is equivalent to table name in SQL
+    timestamps: true,
+    collection: "Config",
   }
 );
 
-const Config = mongoose.model("Config", ConfigSchema); // Create the model from the schema
+const Config = mongoose.model("Config", configSchema);
 
 export default Config;

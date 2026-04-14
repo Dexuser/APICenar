@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       unique: true,
       trim: true,
+      sparse: true,
     },
 
     phone: {
@@ -66,9 +67,19 @@ const userSchema = new mongoose.Schema(
       default: null
     },
 
+    activateTokenExpiration: {
+      type: Date,
+      default: null
+    },
+
     // comercios
     commerceName: {
       type: String
+    },
+
+    description: {
+      type: String,
+      default: null
     },
 
     commerceLogo: {
@@ -97,7 +108,12 @@ const userSchema = new mongoose.Schema(
     },
 
     // Delivery
-    isBusy: {type: Boolean, default: false} // si es true el dilevery esta ocupado, de lo contrario, NO ESTA OCUPADO
+    isBusy: {type: Boolean, default: false}, // si es true el dilevery esta ocupado, de lo contrario, NO ESTA OCUPADO
+
+    isDefaultAdmin: {
+      type: Boolean,
+      default: false
+    }
 
 
   },
