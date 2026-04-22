@@ -7,8 +7,8 @@
     "start": "cross-env NODE_ENV=development nodemon app.js",
     "dev": "cross-env NODE_ENV=development nodemon app.js",
     "qa": "cross-env NODE_ENV=qa nodemon app.js",
-    "seed": "node seeds/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prod": "cross-env NODE_ENV=production node app.js",
+    "seed": "node seeds/index.js"
   },
   "author": "",
   "license": "ISC",
