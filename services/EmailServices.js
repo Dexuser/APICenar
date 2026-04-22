@@ -1,27 +1,25 @@
-import nodemailer from "nodemailer";
+import { BrevoClient } from '@getbrevo/brevo';
+import {} from '@getbrevo/brevo'
 
-const transporter = nodemailer.createTransport({
-  service: process.env.EMAIL_SERVICE || "gmail", // Default to Gmail if not specified
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
+const brevo = new BrevoClient({
+  apiKey: process.env.BREVO_API_KEY,
 });
 
-// Function to send an email
-// It takes an object with 'to', 'subject', and 'html' properties
 export async function sendEmail({ to, subject, html }) {
   try {
-    const info = await transporter.sendMail({
-      from: `${process.env.EMAIL_USER}`,
-      to,
-      subject,
-      html,
+
+    const result = await brevo.transactionalEmails.sendTransacEmail({
+      subject: subject,
+      textContent: html,
+      sender: { name: "AppCenar", email: process.env.BREVO_SENDER_EMAIL},
+      to: [{ email: to, }],
     });
 
-    console.log("Email sent successfully:", info.response);
-    return info;
+    console.log('Email sent:', result);
+
+    return result;
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Error enviando email:", error);
+    throw error;
   }
 }
