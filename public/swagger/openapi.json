@@ -5,10 +5,14 @@
     "version": "1.0.0",
     "description": "Compact OpenAPI documentation for the ApiCenar REST API."
   },
-  "servers": [
-    { "url": "http://localhost:8080" },
-    { "url": "http://localhost:5000" }
-  ],
+"servers": [
+  {
+    "url": "https://apicenar-production-cd8f.up.railway.app"
+  },
+  {
+    "url": "http://localhost:5000"
+  }
+],
   "security": [{ "BearerAuth": [] }],
   "components": {
     "securitySchemes": {
